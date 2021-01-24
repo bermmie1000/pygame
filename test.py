@@ -1,4 +1,5 @@
 import pygame
+from datetime import datetime, timedelta
 
 pygame.init()
 
@@ -7,6 +8,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 done = False
 clock = pygame.time.Clock()
+last_moved_time = datetime.now()
 
 RIGHT = pygame.K_RIGHT
 LEFT = pygame.K_LEFT
@@ -42,20 +44,21 @@ class Plane:
 
 class Missile:
     def __init__(self, plane_x, plane_y):
-        self.x = plane_x + 30
-        self.y = plane_y + 30
+        self.x = plane_x + 60
+        self.y = plane_y + 15
 
     def draw(self, screen, event):
-        figure = pygame.Rect(self.x + 30, self.y - 10, 3, 3)
-        figure = pygame.draw.rect(screen, RED, figure)
 
         if event.key == SPACEBAR:
+            figure = pygame.Rect(self.x, self.y, 10, 10)
+            figure = pygame.draw.rect(screen, RED, figure)
+
             return figure
         else:
             pass
 
-    def move(self, event, screen):
-        pass
+    def move(self):
+        self.x = self.x + 10
 
 
 screen = pygame.display.set_mode(Board().size)
@@ -64,8 +67,10 @@ screen = pygame.display.set_mode(Board().size)
 def runGame():
     board = Board()
     plane = Plane()
+    missiles = []
 
     global done
+
     while not done:
         missile = Missile(plane.x, plane.y)
 
@@ -81,8 +86,12 @@ def runGame():
             if event.type == pygame.KEYDOWN:
                 plane.move(event)
                 missile.draw(screen, event)
+                missiles.append(missile)
             else:
                 pass
+
+        for i in missiles:
+            i.move()
 
         screen.blit(plane.draw(), (plane.x, plane.y))
 
