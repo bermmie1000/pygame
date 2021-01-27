@@ -19,7 +19,7 @@ SPACEBAR = pygame.K_SPACE
 
 class Board:
     def __init__(self):
-        self.size = [500, 500]
+        self.size = [1000, 500]
         self.color = WHITE
 
 
@@ -43,22 +43,15 @@ class Plane:
 
 
 class Missile:
-    def __init__(self, plane_x, plane_y):
-        self.x = plane_x + 60
-        self.y = plane_y + 15
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-    def draw(self, screen, event):
+    def draw(self, screen, x, y):
+        figure = pygame.Rect(x, y, 10, 10)
+        figure = pygame.draw.rect(screen, RED, figure)
 
-        if event.key == SPACEBAR:
-            figure = pygame.Rect(self.x, self.y, 10, 10)
-            figure = pygame.draw.rect(screen, RED, figure)
-
-            return figure
-        else:
-            pass
-
-    def move(self):
-        self.x = self.x + 10
+        return figure
 
 
 screen = pygame.display.set_mode(Board().size)
@@ -67,12 +60,11 @@ screen = pygame.display.set_mode(Board().size)
 def runGame():
     board = Board()
     plane = Plane()
-    missiles = []
+    missile_xy = []
 
     global done
 
     while not done:
-        missile = Missile(plane.x, plane.y)
 
         clock.tick(10)
         screen.fill(board.color)
@@ -85,13 +77,20 @@ def runGame():
 
             if event.type == pygame.KEYDOWN:
                 plane.move(event)
-                missile.draw(screen, event)
-                missiles.append(missile)
+                if event.key == SPACEBAR:
+                    missile = Missile(plane.x + 50, plane.y + 15)
+                    missile_xy.append([missile.x, missile.y])
             else:
                 pass
 
-        for i in missiles:
-            i.move()
+        if len(missile_xy) != 0:
+            for i, mxy in enumerate(missile_xy):
+                mxy[0] += 15
+                missile_xy[i][0] = mxy[0]
+                missile.draw(screen, mxy[0], mxy[1])
+
+                if mxy[0] >= board.size[0]:
+                    missile_xy.remove(mxy)
 
         screen.blit(plane.draw(), (plane.x, plane.y))
 
