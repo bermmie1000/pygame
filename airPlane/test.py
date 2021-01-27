@@ -49,9 +49,7 @@ class Missile:
 
     def draw(self, screen, x, y):
         figure = pygame.Rect(x, y, 10, 10)
-        figure = pygame.draw.rect(screen, RED, figure)
-
-        return figure
+        pygame.draw.rect(screen, RED, figure)
 
 
 screen = pygame.display.set_mode(Board().size)
