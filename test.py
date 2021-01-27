@@ -85,8 +85,8 @@ def runGame():
 
             if event.type == pygame.KEYDOWN:
                 plane.move(event)
-                missile.draw(screen, event)
-                missiles.append(missile)
+                one = missile.draw(screen, event)
+                one.move()
             else:
                 pass
 
