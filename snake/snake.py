@@ -4,6 +4,7 @@ import time
 import random
 
 pygame.init()
+pygame.font.init()
 
 # ===========================================
 # CONSTANTS
@@ -121,6 +122,7 @@ def runGame():
     PLAYING = True
 
     screen = pygame.display.set_mode(board.size)
+    font = pygame.font.SysFont("Comic Sans MS", 30)
 
     isApple = False
     while PLAYING:
@@ -138,11 +140,12 @@ def runGame():
 
         # Board
         screen.fill(board.color)
-
+        text = len(snake.positions)
+        banner = font.render(f"Score:{text}", False, (0, 0, 0))
+        screen.blit(banner, (100, 0))
         snake.draw(screen)
         snake.crawl()
 
-        print(len(apple_box))
         if len(apple_box) == 0:
             apple = Apple()
             position = apple.position
