@@ -75,14 +75,9 @@ def runGame():
 
             if event.type == pygame.KEYDOWN:
                 plane.move(event)
-<<<<<<< HEAD:test.py
-                one = missile.draw(screen, event)
-                one.move()
-=======
                 if event.key == SPACEBAR:
                     missile = Missile(plane.x + 50, plane.y + 15)
                     missile_xy.append([missile.x, missile.y])
->>>>>>> 5e695679bc0cb5810ba4da8532a40f8abbce83c7:airPlane/test.py
             else:
                 pass
 
